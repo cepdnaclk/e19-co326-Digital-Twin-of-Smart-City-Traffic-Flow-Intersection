@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-broker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kafka
+      component: broker
+  template:
+    metadata:
+      labels:
+        app: kafka
+        component: broker
+    spec:
+      containers:
+      - name: kafka
+        image: confluentinc/cp-kafka:latest   # Update to your Kafka image
+        ports:
+        - containerPort: 9092
+        command: ["bash", "-c", "kafka-server-start /etc/kafka/server.properties & sleep infinity"]  # Start Kafka and sleep indefinitely
+
