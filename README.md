@@ -1,8 +1,8 @@
-Basic Overview of the Software Environment 
+Basic Overview of the Design
 
 
 
-![Project Logo](\diagrams\digital-twin-for-traffic-flow-t-junctiondesign.png)
+![Project Logo](/diagrams/digital-twin-for-traffic-flow-t-junctiondesign.png)
 
 
 Considering a "T jucntion"'s traffic flow intersection 
