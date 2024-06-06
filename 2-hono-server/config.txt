@@ -4,7 +4,7 @@
 4. continue with https://github.com/eclipse/packages/blob/master/charts/hono/README.md
 
 Testing Sending data to hono
-1. send:
+1. send to hono http adapter:
 curl -skX POST \
   --url 'https://10.152.183.250:28443/v1/tenants' \
   --header 'Content-Type: application/json' \
@@ -29,5 +29,5 @@ curl -skX POST \
   }'
 
 
-2. receive
+2. verofy using service-device-registry
 curl -skIX GET https://10.128.0.3:28443/v1/tenants
