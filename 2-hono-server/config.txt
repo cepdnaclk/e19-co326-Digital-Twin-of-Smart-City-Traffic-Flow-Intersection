@@ -1,0 +1,4 @@
+1. Setup GCP Compute engine with 2-CPUs and 40 GB storage
+2. Install SNAP
+3. Install microk8s
+4. continue with https://github.com/eclipse/packages/blob/master/charts/hono/README.md

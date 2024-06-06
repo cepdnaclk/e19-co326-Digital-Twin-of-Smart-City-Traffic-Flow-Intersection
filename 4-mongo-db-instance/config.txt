@@ -1,0 +1,1 @@
+add mongo db details/collections
