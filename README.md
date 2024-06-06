@@ -2,73 +2,19 @@ Basic Overview of the Software Environment
 
 
 
-
-```
-+----------------------------------------------------+
-|     Docker Host(Local Machie)                      |
-+----------+-----------------------------------------+
-                |                            |
-                |                            |
- Real           |                            | Simulated
- Twin           |                            | Twin
- (Soft-Sensors) |                            |
-                v                            v 
-+----------------------+    +--------------------------+
-|   Kubernetes Cluster |    |    Simulation            |
-|                      |    |(another docker container)|
-|    Sensor_1          |    |                          |
-|    +--------------+  |    |     1. Dashboard         |
-|    |  Pod         |  |    |       i.Visulizations    |
-|    |  +----------+|  |    |       ii.ML Analysis     |
-|    |  | Container||  |    |     2. 3D simulation     |
-|    |  +----------+|  |    |                          |
-|    +--------------+  |    +--------------------------+
-|                      |
-|    Sensor_2          |
-|    +--------------+  |
-|    |  Pod         |  |
-|    |  +----------+|  |
-|    |  | Container||  |
-|    |  +----------+|  |
-|    +--------------+  |
-|            .         |
-|            .         |
-|            .         |
-|                      |
-|    Sensor_6          |
-|    +--------------+  |
-|    |  Pod         |  |
-|    |  +----------+|  |
-|    |  | Container||  |
-|    |  +----------+|  |
-|    +--------------+  |
-+----------------------+
-           |
-           |
-           v
-+----------------------+
-|  Kubernetes Services |
-|                      |
-|    +--------------+  |
-|    |  Service     |  |
-|    |              |  |
-|    +--------------+  |
-|    +--------------+  |
-|    |  Service     |  |
-|    |(load balancer)  |
-|    +--------------+  |
-|    +--------------+  |
-|    |  Service     |  |
-|    |              |  |
-|    +--------------+  |
-+----------------------+
-```
+![Project Logo](\diagrams\digital-twin-for-traffic-flow-t-junctiondesign.png)
 
 
-Initially Considering Only a "T jucntion"'s traffic flow intersection 
+Considering a "T jucntion"'s traffic flow intersection 
 * vehicle flow,
 * traffic congestion,
 * signal timings(dynamic cycle calculation)
 * later/optional(take pedestrian behaviours into consideration)
 
- Assuming 6 sensor's gather data; 2 per each road and catergorizing into all possible 6 phases (Therefore 6 pods) 
+ Assuming 6 sensor's gather data; 2 per each road and catergorizing into all possible 6 phases 
+ 1. Road-1-Left
+ 2. Road-1-Right
+ 3. Road-2-Left
+ 4. Road-2-Right
+ 5. Road-3-Left
+ 6. Road-3-Right
