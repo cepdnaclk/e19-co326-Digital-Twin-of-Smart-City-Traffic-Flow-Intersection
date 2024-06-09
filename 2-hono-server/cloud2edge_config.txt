@@ -21,3 +21,15 @@ sudo microk8s helm repo add eclipse-iot https://eclipse.org/packages/charts
 sudo microk8s helm repo update
 sudo microk8s helm search repo eclipse-iot/cloud2edge
 sudo microk8s helm install -n $NS --wait --timeout 20m $RELEASE eclipse-iot/cloud2edge --debug
+
+3.0 To access ditto-swagger ui or any other service publicly
+sudo microk8s kubectl edit svc c2e-ditto-swaggerui -n $NS
+3.1 edit the service.yaml file
+spec:
+  type: NodePort
+3.2 verify the service's port number
+sudo microk8s kubectl get svc -n $NS
+3.3 verify my public IP
+curl ifconfig.me
+3.4 access the ui from browser
+http://EXTERNAL_IP:NODE_PORT_NO
