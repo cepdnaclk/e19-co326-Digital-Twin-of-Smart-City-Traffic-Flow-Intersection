@@ -17,3 +17,7 @@ NS=cloud2edge
 2.1 Node Port installation (alternatively can use load balancer installation)
 sudo microk8s kubectl create namespace $NS
 RELEASE=c2e
+sudo microk8s helm repo add eclipse-iot https://eclipse.org/packages/charts
+sudo microk8s helm repo update
+sudo microk8s helm search repo eclipse-iot/cloud2edge
+sudo microk8s helm install -n $NS --wait --timeout 20m $RELEASE eclipse-iot/cloud2edge --debug
