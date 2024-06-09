@@ -1,1 +1,19 @@
+1.0 install microk8s https://www.eclipse.org/packages/prereqs/
+sudo snap install microk8s --classic
+1.1 verify 
+microk8s status --wait-ready
+1.2 install required modules 
+LOCAL_ADDRESS=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+sudo microk8s enable metrics-server
+sudo microk8s enable storage
+sudo microk8s enable dns
+sudo microk8s enable metallb:$LOCAL_ADDRESS-$LOCAL_ADDRESS
+1.3 verify kubectl version
+sudo microk8s kubectl version
 
+
+2.0 install cloud2edge  https://www.eclipse.org/packages/packages/cloud2edge/installation/
+NS=cloud2edge
+2.1 Node Port installation (alternatively can use load balancer installation)
+sudo microk8s kubectl create namespace $NS
+RELEASE=c2e
