@@ -1,4 +1,4 @@
-from(bucket: "raw-data")
+from(bucket: "raw-data")  // use table mode
   |> range(start: -10m)  // past 10 minutes
   |> filter(fn: (r) => r._measurement == "sensor_Road1_Left") // sensor name
   |> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")
