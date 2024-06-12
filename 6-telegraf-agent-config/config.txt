@@ -1,1 +1,8 @@
 add telegraf agent connection details
+
+# quick error fixing by login to containers
+
+sudo docker-compose run --rm --entrypoint /bin/sh telegraf_0
+
+/bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+
