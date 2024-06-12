@@ -1,0 +1,388 @@
+version: "3"
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    container_name: zookeeper
+    networks:
+      - broker-kafka
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:6.2.0
+    container_name: kafka
+    networks:
+      - broker-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: kafka:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://192.168.1.10:9092
+      # KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT 
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      # KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.27.0
+    networks:
+      - broker-kafka
+    depends_on:
+      - kafka
+      - zookeeper
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+      
+
+  producer_0:
+    container_name: producer_0
+    build:
+      context: ./producers/producer_0
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road1_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8000:8000
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+     
+  producer_1:
+    container_name: producer_1
+    build:
+      context: ./producers/producer_1
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road1_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8001:8001
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+      
+  producer_2:
+    container_name: producer_2
+    build:
+      context: ./producers/producer_2
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road2_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8002:8002
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+      
+  producer_3:
+    container_name: producer_3
+    build:
+      context: ./producers/producer_3
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road2_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8003:8003
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+      
+  producer_4:
+    container_name: producer_4
+    build:
+      context: ./producers/producer_4
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road3_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8004:8004
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+      
+  producer_5:
+    container_name: producer_5
+    build:
+      context: ./producers/producer_5
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road3_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8005:8005
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+    networks:
+      - broker-kafka
+
+  telegraf_0:
+    image: telegraf:latest
+    container_name: telegraf_0
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_0/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+    
+  telegraf_1:
+    image: telegraf:latest
+    container_name: telegraf_1
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_1/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+    
+  telegraf_2:
+    image: telegraf:latest
+    container_name: telegraf_2
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_2/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+    
+  telegraf_3:
+    image: telegraf:latest
+    container_name: telegraf_3
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_3/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+    
+  telegraf_4:
+    image: telegraf:latest
+    container_name: telegraf_4
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_4/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+ 
+  telegraf_5:
+    image: telegraf:latest
+    container_name: telegraf_5
+    depends_on:
+      - kafka
+      - influxdb
+    networks:
+      - broker-kafka
+    volumes:
+      - ./telegraf/telegraf_5/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    user: root
+    command: /bin/sh -c "mkdir -p /root/.cache/snowflake && touch /root/.cache/snowflake/ocsp_response_cache.json && chmod 644 /root/.cache/snowflake/ocsp_response_cache.json && telegraf --debug --config /etc/telegraf/telegraf.conf"
+  
+  influxdb:
+    image: influxdb:2.0.4
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: password
+      DOCKER_INFLUXDB_INIT_ORG: myorg
+      DOCKER_INFLUXDB_INIT_BUCKET: raw-data
+    networks:
+      - broker-kafka
+      
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: password
+    networks:
+      - broker-kafka
+      
+  consumer_0:
+    container_name: consumer_0
+    build:
+      context: ./consumers/consumer_0
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road1_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8010:8010
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_0
+    networks:
+      - broker-kafka   
+      
+        
+  consumer_1:
+    container_name: consumer_1
+    build:
+      context: ./consumers/consumer_1
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road1_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8011:8011
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_1
+    networks:
+      - broker-kafka   
+      
+        
+  consumer_2:
+    container_name: consumer_2
+    build:
+      context: ./consumers/consumer_2
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road2_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8012:8012
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_2
+    networks:
+      - broker-kafka   
+   
+        
+  consumer_3:
+    container_name: consumer_3
+    build:
+      context: ./consumers/consumer_3
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road2_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8013:8013
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_3
+    networks:
+      - broker-kafka   
+   
+        
+  consumer_4:
+    container_name: consumer_4
+    build:
+      context: ./consumers/consumer_4
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road3_Left
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8014:8014
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_4
+    networks:
+      - broker-kafka   
+   
+      
+  consumer_5:
+    container_name: consumer_5
+    build:
+      context: ./consumers/consumer_5
+      dockerfile: Dockerfile
+    environment:
+      - KAFKA_TOPIC_NAME=sensor_Road3_Right
+      - KAFKA_SERVER=kafka
+      - KAFKA_PORT=29092
+    ports:
+      - 8015:8015
+    restart: "always"
+    depends_on:
+      - zookeeper
+      - kafka
+      - producer_5
+    networks:
+      - broker-kafka   
+   
+
+networks:
+  broker-kafka:
+    driver: bridge
+
