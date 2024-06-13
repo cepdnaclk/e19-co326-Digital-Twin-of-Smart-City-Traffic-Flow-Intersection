@@ -1,0 +1,6 @@
+docker
+docker-compose
+python 
+    pip 
+    requests 
+    pydantic
