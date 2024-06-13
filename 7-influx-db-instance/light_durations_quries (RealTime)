@@ -1,0 +1,13 @@
+from(bucket: "raw-data")
+  |> range(start: -24h)
+  |> filter(fn: (r) => r["_measurement"] == "sensor_Road1_Left")
+  |> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")
+  |> map(fn: (r) => ({
+      _time: r._time,
+      total_vehicles: r["total"],
+      traffic_situation: r["traffic_situation"],
+      red_duration: if r["traffic_situation"] == "low" then 180 else if r["traffic_situation"] == "normal" then 240 else 300,
+      yellow_duration: 30,
+      green_duration: if r["traffic_situation"] == "low" then 390 else if r["traffic_situation"] == "normal" then 330 else 270,
+  }))
+  |> yield(name: "optimized_light_durations")
