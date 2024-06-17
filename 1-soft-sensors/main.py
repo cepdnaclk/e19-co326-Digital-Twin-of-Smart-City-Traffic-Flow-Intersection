@@ -15,7 +15,7 @@ tasks = [
 
 def run_send_script(file_path, endpoint):
     script_path = os.path.join(os.path.dirname(__file__), 'send.py')
-    subprocess.run(["python3", script_path, file_path, endpoint])
+    subprocess.run(["python", script_path, file_path, endpoint])
 
 # Run tasks concurrently
 with ThreadPoolExecutor(max_workers=6) as executor:
