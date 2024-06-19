@@ -4,12 +4,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 # Define paths and endpoints
 tasks = [
-    ("sensor_Road1_Left/data.csv", "http://localhost:8000/producer"),
-    ("sensor_Road1_Right/data.csv", "http://localhost:8001/producer"),
-    ("sensor_Road2_Left/data.csv", "http://localhost:8002/producer"),
-    ("sensor_Road2_Right/data.csv", "http://localhost:8003/producer"),
-    ("sensor_Road3_Left/data.csv", "http://localhost:8004/producer"),
-    ("sensor_Road3_Right/data.csv", "http://localhost:8005/producer")
+    ("sensor_Road1/data.csv", "http://localhost:8000/producer"),
+    ("sensor_Road2/data.csv", "http://localhost:8001/producer"),
+    ("sensor_Road3/data.csv", "http://localhost:8002/producer"),
 
 ]
 

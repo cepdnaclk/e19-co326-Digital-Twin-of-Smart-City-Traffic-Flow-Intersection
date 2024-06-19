@@ -6,9 +6,6 @@ import requests
 from typing import Optional
 from pydantic import BaseModel, ValidationError
 
-#file_path = 'D:/projects/Git uploads/e19-co326-Digital-Twin-of-Smart-City-Traffic-Flow-Intersection/1-soft-sensors/trash/data.csv'
-#endpoint = 'http://localhost:8000/producer'
-
 
 class Message(BaseModel):
     index: int
