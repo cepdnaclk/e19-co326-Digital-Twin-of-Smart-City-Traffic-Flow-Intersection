@@ -1,4 +1,4 @@
-# ./real-twin/sensor_1/Dockerfile
+# ./producers/producer_1/Dockerfile
 
 # Set python version
 ARG BASE_CONTAINER=python:3.8
@@ -32,4 +32,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY ./app ./app
 
 # Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]

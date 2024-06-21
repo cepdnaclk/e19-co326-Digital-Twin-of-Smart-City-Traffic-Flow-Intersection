@@ -1,0 +1,6 @@
+from(bucket: "raw-data")  // use table mode
+  |> range(start: -10m)  // past 10 minutes
+  |> filter(fn: (r) => r._measurement == "sensor_Road1_Left") // sensor name
+  |> pivot(rowKey: ["_time"], columnKey: ["_field"], valueColumn: "_value")
+  |> keep(columns: ["_time", "bike_count", "index", "car_count", "day_of_week", "timestamp", "total", "traffic_situation", "truck_count"])
+  |> limit(n: 20)

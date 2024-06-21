@@ -1,13 +1,26 @@
-# ./real-twin/sensor_1/app/core/models/message.py
-
 from typing import Optional
 from pydantic import BaseModel
 
 class Message(BaseModel):
-    # Define three attributes for the Message class: index, timestamp, and vehicle_count
+    # Define attributes for the Message class
     # - index: a required attribute of type integer (int)
     # - timestamp: a required attribute of type string (str)
-    # - vehicle_count: a required attribute of type integer (int)
+    # - date: a required attribute of type string (str)
+    # - day_of_week: a required attribute of type string (str)
+    # - car_count: a required attribute of type integer (int)
+    # - bike_count: a required attribute of type integer (int)
+    # - bus_count: a required attribute of type integer (int)
+    # - truck_count: a required attribute of type integer (int)
+    # - total: a required attribute of type integer (int)
+    # - traffic_situation: a required attribute of type string (str)
     index: int
     timestamp: str
-    vehicle_count: int
+    date: str
+    day_of_week: str
+    car_count: int
+    bike_count: int
+    bus_count: int
+    truck_count: int
+    total: int
+    traffic_situation: str
+
