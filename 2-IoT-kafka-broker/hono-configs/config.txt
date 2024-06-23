@@ -1,0 +1,33 @@
+1. Setup GCP Compute engine with 2-CPUs and 40 GB storage
+2. Install SNAP
+3. Install microk8s
+4. continue with https://github.com/eclipse/packages/blob/master/charts/hono/README.md
+
+Testing Sending data to hono
+1. send to hono http adapter:
+curl -skX POST \
+  --url 'https://10.152.183.250:28443/v1/tenants' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "id": "TEST_TENANT",
+    "type": "tenant",
+    "enabled": true,
+    "trusted-ca": [
+      {
+        "subject-dn": "CN=ca,OU=Hono,O=Eclipse",
+        "public-key": "PublicKey==",
+        "auto-provisioning-enabled": false,
+        "algorithm": "RSA"
+      },
+      {
+        "subject-dn": "CN=ca,OU=Hono,O=ACME Inc.",
+        "public-key": "ECKey==",
+        "auto-provisioning-enabled": true,
+        "algorithm": "EC"
+      }
+    ]
+  }'
+
+
+2. verofy using service-device-registry
+curl -skIX GET https://10.128.0.3:28443/v1/tenants
