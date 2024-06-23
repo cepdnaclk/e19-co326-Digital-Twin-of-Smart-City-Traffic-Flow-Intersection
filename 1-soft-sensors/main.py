@@ -1,18 +1,20 @@
+
+
 import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 
 # Define paths and endpoints
 tasks = [
-    ("sensor_Road1/data.csv", "http://localhost:8000/producer"),
-    ("sensor_Road2/data.csv", "http://localhost:8001/producer"),
-    ("sensor_Road3/data.csv", "http://localhost:8002/producer"),
+    ("sensor_Road1/data.csv", "http://localhost:8000/topic-1"),
+    ("sensor_Road2/data.csv", "http://localhost:8000/topic-2"),
+    ("sensor_Road3/data.csv", "http://localhost:8000/topic-3"),
 
 ]
 
 def run_send_script(file_path, endpoint):
     script_path = os.path.join(os.path.dirname(__file__), 'send.py')
-    subprocess.run(["python", script_path, file_path, endpoint])
+    subprocess.run(["python3", script_path, file_path, endpoint])
 
 # Run tasks concurrently
 with ThreadPoolExecutor(max_workers=6) as executor:
