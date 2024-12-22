@@ -1,0 +1,44 @@
+# Copyright (c) 2021 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License 2.0 which is available at
+# http://www.eclipse.org/legal/epl-2.0
+#
+# SPDX-License-Identifier: EPL-2.0
+type: object
+description: Settings for announcements to be made about the subject.
+properties:
+  beforeExpiry:
+    type: string
+    description: |-
+      The duration before expiry when an announcement should be made.
+      Must be a positive integer followed by one of `h` (hour), `m` (minute) or `s` (second).
+  whenDeleted:
+    type: boolean
+    description: Whether an announcement should be made when this subject is deleted.
+  requestedAcks:
+    type: object
+    description: Settings to enable at-least-once delivery for policy announcements.
+    properties:
+      labels:
+        type: array
+        description: Acknowledgement labels to request when an announcement is published.
+        items:
+          type: string
+      timeout:
+        type: string
+        description: How long to wait for requested announcements before retrying publication of an announcement.
+    example:
+      labels: ["my-connection-id:my-issued-acknowledgement"]
+      timeout: "5s"
+  randomizationInterval:
+    type: string
+    default: "5m"
+    description: Interval in which the announcement can be sent earlier than the configured `beforeExpiry`. The actual point in time when the announcement will be sent is `beforeExpire` plus a randomly chosen time within the `randomizationInterval`. E.g assuming `beforeExpiry` is set to 5m and `randomizationInterval` is set to 1m, the announcements will be sent between 5 and 6 minutes before the subject expires. If omitted, the default value will be applied. If set to minimum, no randomization will be applied.
+example:
+  beforeExpiry: "5m"
+  whenDeleted: true
+  randomizationInterval: "5m"
